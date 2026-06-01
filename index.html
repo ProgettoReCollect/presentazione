@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReCollect — Presentazione Progetto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,800;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a1628;
+    --bg-light: #f0f4f0;
+    --green: #2d6a4f;
+    --green-dim: #52b788;
+    --green-bright: #40916c;
+    --amber: #f4a228;
+    --blue: #5a9bd4;
+    --pink: #e27396;
+    --teal: #34b8a0;
+    --text: #ffffff;
+    --text-dim: rgba(255,255,255,0.6);
+    --mono: 'Manrope', sans-serif;
+    --serif: 'Fraunces', Georgia, serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; background: var(--bg); font-family: var(--mono); }
+
+  /* ── SLIDE SYSTEM ── */
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 60px 80px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    transform: translateX(40px);
+    overflow: hidden;
+  }
+  .slide.active {
+    opacity: 1; pointer-events: auto;
+    transform: translateX(0);
+  }
+  .slide.exit {
+    opacity: 0; transform: translateX(-40px);
+  }
+
+  /* ── BACKGROUNDS ── */
+  .bg-dark { background: linear-gradient(160deg, #0a1628 0%, #0f2744 40%, #1b4332 100%); color: var(--text); }
+  .bg-green { background: linear-gradient(160deg, #1b4332 0%, #2d6a4f 50%, #0f2744 100%); color: var(--text); }
+  .bg-light { background: var(--bg-light); color: #1a2e1a; }
+  .bg-white { background: #ffffff; color: #1a2e1a; }
+  .bg-accent { background: linear-gradient(160deg, #0f2744 0%, #2d6a4f 100%); color: var(--text); }
+
+  /* ── Glow orbs ── */
+  .slide::before {
+    content: ''; position: absolute;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(82,183,136,0.12) 0%, transparent 70%);
+    top: -200px; right: -200px; pointer-events: none;
+  }
+  .bg-light::before, .bg-white::before { background: radial-gradient(circle, rgba(45,106,79,0.08) 0%, transparent 70%); }
+
+  /* ── TYPOGRAPHY ── */
+  .slide-num {
+    position: absolute; top: 32px; right: 40px;
+    font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text-dim); font-weight: 600;
+  }
+  .bg-light .slide-num, .bg-white .slide-num { color: rgba(26,46,26,0.4); }
+  .tag {
+    display: inline-block; padding: 6px 18px; border-radius: 24px;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    background: rgba(82,183,136,0.15); color: var(--green-dim);
+    border: 1px solid rgba(82,183,136,0.3); margin-bottom: 24px;
+  }
+  .bg-light .tag { background: rgba(45,106,79,0.1); color: var(--green); border-color: rgba(45,106,79,0.2); }
+  h1 {
+    font-family: var(--serif); font-weight: 800;
+    font-size: clamp(2.4rem, 5vw, 4rem); line-height: 1.1;
+    margin-bottom: 20px; text-align: center;
+  }
+  h1 em { color: var(--green-dim); font-weight: 300; font-style: italic; }
+  .bg-light h1 em, .bg-white h1 em { color: var(--green); }
+  h2 {
+    font-family: var(--serif); font-weight: 700;
+    font-size: clamp(1.6rem, 3vw, 2.4rem); line-height: 1.2;
+    margin-bottom: 16px; text-align: center;
+  }
+  .subtitle {
+    font-size: 1rem; color: var(--text-dim); text-align: center;
+    max-width: 640px; line-height: 1.7; margin-bottom: 40px;
+  }
+  .bg-light .subtitle, .bg-white .subtitle { color: #6b8f6b; }
+
+  /* ── COVER SLIDE ── */
+  .cover-logo { font-size: 6rem; margin-bottom: 8px; }
+  .cover-brand { font-family: var(--serif); font-size: 4.5rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+  .cover-brand em { color: var(--green-dim); font-weight: 300; }
+  .cover-tagline { font-size: 1.1rem; color: var(--text-dim); margin-bottom: 40px; letter-spacing: 0.5px; }
+  .cover-meta { font-size: 0.72rem; color: rgba(255,255,255,0.35); letter-spacing: 1px; }
+  .cover-start {
+    display: inline-block; padding: 14px 36px; border-radius: 12px;
+    background: var(--green-dim); color: white; font-weight: 600;
+    font-size: 0.85rem; border: none; cursor: pointer;
+    transition: all 0.2s; margin-bottom: 32px;
+    box-shadow: 0 4px 24px rgba(82,183,136,0.3);
+  }
+  .cover-start:hover { background: var(--green-bright); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(82,183,136,0.4); }
+
+  /* ── GRID CARDS ── */
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; max-width: 960px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; max-width: 880px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; width: 100%; max-width: 960px; }
+  .card {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px; padding: 28px 24px; text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.3); }
+  .bg-light .card, .bg-white .card {
+    background: white; border-color: #d4e8d4;
+    box-shadow: 0 2px 12px rgba(45,106,79,0.06);
+  }
+  .card-icon { font-size: 2.4rem; margin-bottom: 14px; }
+  .card-title { font-family: var(--serif); font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+  .card-desc { font-size: 0.75rem; color: var(--text-dim); line-height: 1.6; }
+  .bg-light .card-desc, .bg-white .card-desc { color: #6b8f6b; }
+
+  /* ── KPI ROW ── */
+  .kpi-row { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+  .kpi { text-align: center; min-width: 140px; }
+  .kpi-val { font-family: var(--serif); font-size: 2.8rem; font-weight: 800; line-height: 1; }
+  .kpi-val.green { color: var(--green-dim); }
+  .kpi-val.amber { color: var(--amber); }
+  .kpi-val.blue { color: var(--blue); }
+  .kpi-val.pink { color: var(--pink); }
+  .kpi-lbl { font-size: 0.68rem; color: var(--text-dim); margin-top: 8px; letter-spacing: 0.5px; }
+  .bg-light .kpi-lbl, .bg-white .kpi-lbl { color: #6b8f6b; }
+
+  /* ── TECH STACK ── */
+  .stack-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; width: 100%; max-width: 800px; }
+  .stack-item {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; padding: 20px 14px; text-align: center;
+  }
+  .stack-label { font-size: 0.6rem; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .stack-name { font-weight: 700; font-size: 0.9rem; }
+
+  /* ── BULLET LIST (slide) ── */
+  .slide-list { list-style: none; max-width: 700px; width: 100%; }
+  .slide-list li {
+    padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex; gap: 16px; align-items: flex-start; font-size: 0.88rem; line-height: 1.6;
+  }
+  .bg-light .slide-list li, .bg-white .slide-list li { border-color: #d4e8d4; color: #1a2e1a; }
+  .slide-list li:last-child { border-bottom: none; }
+  .li-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+  .li-bold { font-weight: 700; }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; margin: 20px 0; }
+  .flow-box {
+    background: rgba(82,183,136,0.15); border: 1px solid rgba(82,183,136,0.3);
+    border-radius: 10px; padding: 12px 20px; font-size: 0.78rem; font-weight: 600;
+    color: var(--green-dim); white-space: nowrap;
+  }
+  .flow-arrow { font-size: 1.2rem; color: var(--text-dim); }
+
+  /* ── QUOTE ── */
+  .quote {
+    font-family: var(--serif); font-size: 1.6rem; font-weight: 300; font-style: italic;
+    color: var(--green-dim); text-align: center; max-width: 700px;
+    line-height: 1.5; margin: 24px 0;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar {
+    position: fixed; bottom: 0; left: 0; height: 3px; z-index: 100;
+    background: var(--green-dim);
+    transition: width 0.4s ease;
+  }
+
+  /* ── NAV CONTROLS ── */
+  .nav-controls {
+    position: fixed; bottom: 20px; right: 24px; z-index: 100;
+    display: flex; gap: 8px;
+  }
+  .nav-btn {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+    color: white; font-size: 1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+    backdrop-filter: blur(8px);
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.2); }
+
+  /* ── Team cards ── */
+  .team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; max-width: 680px; width: 100%; }
+  .team-card {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px; padding: 36px 28px; text-align: center;
+  }
+  .team-avatar {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--green), var(--green-dim));
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--serif); font-size: 1.6rem; font-weight: 700;
+    color: white; margin: 0 auto 16px;
+  }
+  .team-name { font-family: var(--serif); font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+  .team-role { font-size: 0.72rem; color: var(--green-dim); font-weight: 600; margin-bottom: 12px; letter-spacing: 0.5px; }
+  .team-desc { font-size: 0.75rem; color: var(--text-dim); line-height: 1.6; }
+
+  /* ── INSIGHT HIGHLIGHT ── */
+  .insight-box {
+    background: rgba(244,162,40,0.1); border: 1px solid rgba(244,162,40,0.25);
+    border-radius: 14px; padding: 24px 28px; max-width: 700px; width: 100%;
+    text-align: center; margin-top: 20px;
+  }
+  .insight-box strong { color: var(--amber); }
+  .bg-light .insight-box { background: #fff8e8; border-color: #f4d080; }
+  .bg-light .insight-box strong { color: #8a5610; }
+
+  /* ── Animations ── */
+  .slide.active .anim-up { animation: fadeUp 0.7s ease both; }
+  .slide.active .d1 { animation-delay: 0.1s; }
+  .slide.active .d2 { animation-delay: 0.2s; }
+  .slide.active .d3 { animation-delay: 0.3s; }
+  .slide.active .d4 { animation-delay: 0.4s; }
+  .slide.active .d5 { animation-delay: 0.5s; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 768px) {
+    .slide { padding: 40px 24px; }
+    .grid-3, .grid-4, .stack-grid { grid-template-columns: 1fr 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .team-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 2rem; }
+    .cover-brand { font-size: 3rem; }
+    .kpi-val { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     SLIDE 0: COVER
+     ══════════════════════════════════════ -->
+<div class="slide bg-dark active" data-slide="0">
+  <span class="slide-num">ITES Barozzi × Tetra Pak · 2025–2026</span>
+  <div class="anim-up" style="text-align:center">
+    <div class="cover-brand">Re<em>Collect</em></div>
+    <div class="cover-tagline">Smart Waste Management for Modena</div>
+  </div>
+  <div class="anim-up d2" style="text-align:center">
+    <button class="cover-start" onclick="goTo(1)">Scopri il progetto →</button>
+  </div>
+  <div class="anim-up d3 cover-meta">Cristian Malec · Andrea Zaccarelli · Prof.ssa Bachechi Chiara</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 1: IL PROBLEMA
+     ══════════════════════════════════════ -->
+<div class="slide bg-dark" data-slide="1">
+  <span class="slide-num">01 / 12</span>
+  <span class="tag anim-up">Il problema</span>
+  <h1 class="anim-up d1">I cittadini vogliono differenziare.<br>Ma <em>non sanno come</em>.</h1>
+  <p class="subtitle anim-up d2">Le regole cambiano per zona. Le informazioni restano sepolte in documenti comunali. I giovani non vengono coinvolti.</p>
+  <div class="kpi-row anim-up d3">
+    <div class="kpi"><div class="kpi-val amber">10-15%</div><div class="kpi-lbl">Plastica non conforme (HERA)</div></div>
+    <div class="kpi"><div class="kpi-val pink">Gap</div><div class="kpi-lbl">Percezione vs realtà</div></div>
+    <div class="kpi"><div class="kpi-val blue">Multi</div><div class="kpi-lbl">Materiali più confusi</div></div>
+  </div>
+  <div class="insight-box anim-up d4">
+    <strong>Insight chiave:</strong> i modenesi sopravvalutano le proprie capacità di differenziare — il Tetra Pak risulta tra i materiali più confusi.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 2: CONTESTO MODENA
+     ══════════════════════════════════════ -->
+<div class="slide bg-green" data-slide="2">
+  <span class="slide-num">02 / 12</span>
+  <span class="tag anim-up">Contesto</span>
+  <h2 class="anim-up d1">Modena sta migliorando. Ma non basta.</h2>
+  <div class="kpi-row anim-up d2">
+    <div class="kpi"><div class="kpi-val green">58%</div><div class="kpi-lbl">RD 2020</div></div>
+    <div class="kpi"><div class="kpi-val green" style="font-size:3.2rem">→</div><div class="kpi-lbl"></div></div>
+    <div class="kpi"><div class="kpi-val green">73%</div><div class="kpi-lbl">RD 2022</div></div>
+    <div class="kpi"><div class="kpi-val green" style="font-size:3.2rem">→</div><div class="kpi-lbl"></div></div>
+    <div class="kpi"><div class="kpi-val green">78%</div><div class="kpi-lbl">RD 2024</div></div>
+  </div>
+  <p class="subtitle anim-up d3">Emilia-Romagna: 79% nel 2024, 664 kg/ab pro capite. Nuovo sistema raccolta ott 2022. TCP da gen 2025.</p>
+  <p class="subtitle anim-up d4" style="margin-bottom:0"><strong style="color:var(--green-dim)">Fonti:</strong> ARPAE, ISPRA, HERA, ATERSIR</p>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 3: LA SOLUZIONE
+     ══════════════════════════════════════ -->
+<div class="slide bg-dark" data-slide="3">
+  <span class="slide-num">03 / 12</span>
+  <span class="tag anim-up">La soluzione</span>
+  <h1 class="anim-up d1">Re<em>Collect</em></h1>
+  <p class="subtitle anim-up d2">Una piattaforma web che rende la raccolta differenziata accessibile, comprensibile e coinvolgente per tutti i cittadini di Modena.</p>
+  <div class="grid-3 anim-up d3">
+    <div class="card">
+      <div class="card-icon">📖</div>
+      <div class="card-title">Guida</div>
+      <div class="card-desc">155+ rifiuti catalogati con motore di ricerca e filtri per categoria</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <div class="card-title">Dati</div>
+      <div class="card-desc">Grafici interattivi: dati istituzionali vs percezione cittadini</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎮</div>
+      <div class="card-title">Gioco</div>
+      <div class="card-desc">155 domande, 4 livelli, punti, classifica — gamification educativa</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 4: ARCHITETTURA
+     ══════════════════════════════════════ -->
+<div class="slide bg-dark" data-slide="4">
+  <span class="slide-num">04 / 12</span>
+  <span class="tag anim-up">Architettura</span>
+  <h2 class="anim-up d1">Stack tecnologico</h2>
+  <p class="subtitle anim-up d2">Nessun framework pesante. Solo tecnologie web standard, per performance e semplicità.</p>
+  <div class="stack-grid anim-up d3">
+    <div class="stack-item"><div class="stack-label">Frontend</div><div class="stack-name">HTML · CSS · JS</div></div>
+    <div class="stack-item"><div class="stack-label">Backend</div><div class="stack-name">PHP</div></div>
+    <div class="stack-item"><div class="stack-label">Database</div><div class="stack-name">Supabase</div></div>
+    <div class="stack-item"><div class="stack-label">Grafici</div><div class="stack-name">Chart.js</div></div>
+    <div class="stack-item"><div class="stack-label">Auth</div><div class="stack-name">Supabase Auth</div></div>
+    <div class="stack-item"><div class="stack-label">Sicurezza</div><div class="stack-name">RLS + JWT</div></div>
+    <div class="stack-item"><div class="stack-label">Font titoli</div><div class="stack-name">Fraunces</div></div>
+    <div class="stack-item"><div class="stack-label">Font corpo</div><div class="stack-name">Manrope</div></div>
+  </div>
+  <div class="flow anim-up d4">
+    <div class="flow-box">Browser</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Supabase SDK</div><div class="flow-arrow">→</div>
+    <div class="flow-box">API REST</div><div class="flow-arrow">→</div>
+    <div class="flow-box">PostgreSQL + RLS</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 5: GUIDA AI RIFIUTI
+     ══════════════════════════════════════ -->
+<div class="slide bg-light" data-slide="5">
+  <span class="slide-num">05 / 12</span>
+  <span class="tag anim-up">Funzionalità</span>
+  <h2 class="anim-up d1">📖 Guida ai Rifiuti</h2>
+  <p class="subtitle anim-up d2">Cerca qualsiasi oggetto e scopri subito dove buttarlo. Regole aggiornate per Modena.</p>
+  <ul class="slide-list anim-up d3">
+    <li><span class="li-icon">🔍</span><span><span class="li-bold">Motore di ricerca</span> con debounce 200ms — cerca per nome, bidone, note</span></li>
+    <li><span class="li-icon">🏷️</span><span><span class="li-bold">8 filtri per categoria</span> — Carta, Plastica, Vetro, Metallo, Organico, Indifferenziato, Ingombrante</span></li>
+    <li><span class="li-icon">📦</span><span><span class="li-bold">155+ rifiuti</span> con emoji, bidone corretto, note pratiche e flag errore frequente</span></li>
+    <li><span class="li-icon">⚠️</span><span><span class="li-bold">Badge "Errore frequente"</span> — evidenzia scontrini, ceramica nel vetro, cartone pizza sporco</span></li>
+  </ul>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 6: GIOCO
+     ══════════════════════════════════════ -->
+<div class="slide bg-dark" data-slide="6">
+  <span class="slide-num">06 / 12</span>
+  <span class="tag anim-up">Gamification</span>
+  <h2 class="anim-up d1">🎮 Dove lo Butto?</h2>
+  <p class="subtitle anim-up d2">Il quiz che trasforma l'apprendimento in una sfida divertente.</p>
+  <div class="grid-4 anim-up d3">
+    <div class="card"><div class="card-icon" style="font-size:1.8rem">🟢</div><div class="card-title">50</div><div class="card-desc">Domande facili</div></div>
+    <div class="card"><div class="card-icon" style="font-size:1.8rem">🟡</div><div class="card-title">50</div><div class="card-desc">Domande medie</div></div>
+    <div class="card"><div class="card-icon" style="font-size:1.8rem">🔴</div><div class="card-title">50</div><div class="card-desc">Domande difficili</div></div>
+    <div class="card"><div class="card-icon" style="font-size:1.8rem">🌍</div><div class="card-title">5</div><div class="card-desc">Bonus Tetra Pak</div></div>
+  </div>
+  <div class="flow anim-up d4" style="margin-top:28px">
+    <div class="flow-box">+10 corretta</div>
+    <div class="flow-box" style="background:rgba(231,76,60,0.15);border-color:rgba(231,76,60,0.3);color:#e74c3c">−5 errore</div>
+    <div class="flow-box">❤️ × 3 vite</div>
+    <div class="flow-box" style="background:rgba(244,162,40,0.15);border-color:rgba(244,162,40,0.3);color:var(--amber)">🏆 Classifica</div>
+  </div>
+  <p class="subtitle anim-up d5" style="margin-top:20px;margin-bottom:0">Ogni partita: 3 facili + 4 medi + 2 difficili + 1 bonus = <strong style="color:var(--green-dim)">10 domande bilanciate</strong></p>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 7: DATABASE
+     ══════════════════════════════════════ -->
+<div class="slide bg-accent" data-slide="7">
+  <span class="slide-num">07 / 12</span>
+  <span class="tag anim-up">Database</span>
+  <h2 class="anim-up d1">7 tabelle · 6 ENUM · RLS · Trigger</h2>
+  <p class="subtitle anim-up d2">PostgreSQL gestito su Supabase. API REST automatiche. Sicurezza nativa.</p>
+  <div class="grid-3 anim-up d3" style="max-width:840px">
+    <div class="card"><div class="card-title">zona</div><div class="card-desc">Aree geografiche monitorate</div></div>
+    <div class="card"><div class="card-title">utente</div><div class="card-desc">Profili UUID + auth.users</div></div>
+    <div class="card"><div class="card-title">tipo_rifiuto</div><div class="card-desc">Catalogo 155+ rifiuti</div></div>
+    <div class="card"><div class="card-title">partita_gioco</div><div class="card-desc">Sessioni con punteggio</div></div>
+    <div class="card"><div class="card-title">dato_istituzionale</div><div class="card-desc">Dati ufficiali per anno/zona</div></div>
+    <div class="card"><div class="card-title">risposta_questionario</div><div class="card-desc">14 campi da Google Forms</div></div>
+  </div>
+  <div class="insight-box anim-up d4" style="margin-top:24px">
+    <strong>Trigger auto-profilo:</strong> alla registrazione, Supabase crea automaticamente il profilo utente con nome, cognome, email e zona.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 8: DATI E INSIGHT
+     ══════════════════════════════════════ -->
+<div class="slide bg-light" data-slide="8">
+  <span class="slide-num">08 / 12</span>
+  <span class="tag anim-up">Dati & Insight</span>
+  <h2 class="anim-up d1">Questionario + Fonti istituzionali</h2>
+  <p class="subtitle anim-up d2">14 insight dal brainstorming, organizzati per impatto sulla giuria Tetra Pak.</p>
+  <div class="grid-2 anim-up d3">
+    <div class="card">
+      <div class="card-icon">⚖️</div>
+      <div class="card-title">Percezione vs Realtà</div>
+      <div class="card-desc">Autovalutazione alta, errore reale alto. Gap misurato tra Q11 e quiz Q6a/Q6b. I multimateriali tra i più confusi.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔎</div>
+      <div class="card-title">Fonti informative</div>
+      <div class="card-desc">Le fonti attuali non bastano: distribuzione tra HERA, Google, Rifiutologo, AI. ReCollect colma il gap.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📈</div>
+      <div class="card-title">Trend Modena</div>
+      <div class="card-desc">58% → 78% RD. Nuovo sistema ott 2022, TCP gen 2025. Dati ARPAE, ISPRA, HERA integrati.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <div class="card-title">Target di ReCollect</div>
+      <div class="card-desc">Chi ritiene importante la differenziata ma non agisce. Gap importanza (Q12) vs frequenza (Q7).</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 9: PROFILO & AUTH
+     ══════════════════════════════════════ -->
+<div class="slide bg-dark" data-slide="9">
+  <span class="slide-num">09 / 12</span>
+  <span class="tag anim-up">Autenticazione</span>
+  <h2 class="anim-up d1">👤 Profilo completo</h2>
+  <p class="subtitle anim-up d2">Registrazione, login, statistiche, storico, classifica, recupero password.</p>
+  <div class="grid-3 anim-up d3">
+    <div class="card"><div class="card-icon">🔐</div><div class="card-title">Auth sicura</div><div class="card-desc">Supabase Auth. Password mai in chiaro. JWT. RLS su ogni tabella.</div></div>
+    <div class="card"><div class="card-icon">📊</div><div class="card-title">4 KPI personali</div><div class="card-desc">Punteggio totale, partite, media %, posizione classifica con medaglie.</div></div>
+    <div class="card"><div class="card-icon">📜</div><div class="card-title">Storico partite</div><div class="card-desc">Ultime 20 partite con data, punti, corrette/totale, valutazione.</div></div>
+  </div>
+  <div class="flow anim-up d4" style="margin-top:24px">
+    <div class="flow-box">Email reset</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Link con token</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Nuova password</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Logout → Login pulito</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 10: DESIGN
+     ══════════════════════════════════════ -->
+<div class="slide bg-green" data-slide="10">
+  <span class="slide-num">10 / 12</span>
+  <span class="tag anim-up">Design</span>
+  <h2 class="anim-up d1">Progettato per bambini e famiglie</h2>
+  <p class="subtitle anim-up d2">Accessibilità, responsive, performance. Wireframe → HTML/CSS definitivi.</p>
+  <div class="grid-3 anim-up d3">
+    <div class="card"><div class="card-icon">♿</div><div class="card-title">Accessibilità</div><div class="card-desc">Font grandi, contrasti alti, emoji come icone, aria-label su ogni elemento interattivo.</div></div>
+    <div class="card"><div class="card-icon">📱</div><div class="card-title">Responsive</div><div class="card-desc">Breakpoint 768px + 480px. Hamburger menu. Griglie adattive. Testato su 3 dispositivi.</div></div>
+    <div class="card"><div class="card-icon">⚡</div><div class="card-title">Performance</div><div class="card-desc">Vanilla JS. Nessun framework. Font con preconnect. Target: caricamento < 2 secondi.</div></div>
+  </div>
+  <div class="flow anim-up d4" style="margin-top:24px">
+    <div class="flow-box">Wireframe HTML</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Design System CSS</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Pagine definitive</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Test responsive</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 11: RISULTATI
+     ══════════════════════════════════════ -->
+<div class="slide bg-dark" data-slide="11">
+  <span class="slide-num">11 / 12</span>
+  <span class="tag anim-up">Risultati</span>
+  <h1 class="anim-up d1">Cosa abbiamo <em>costruito</em></h1>
+  <div class="kpi-row anim-up d2">
+    <div class="kpi"><div class="kpi-val green">6</div><div class="kpi-lbl">Pagine del sito</div></div>
+    <div class="kpi"><div class="kpi-val amber">155+</div><div class="kpi-lbl">Rifiuti catalogati</div></div>
+    <div class="kpi"><div class="kpi-val blue">155</div><div class="kpi-lbl">Domande di gioco</div></div>
+    <div class="kpi"><div class="kpi-val pink">7</div><div class="kpi-lbl">Tabelle database</div></div>
+  </div>
+  <div class="quote anim-up d3">"Due studenti, una sfida concreta: trasformare competenze tecniche in impatto sociale per Modena."</div>
+  <div class="grid-3 anim-up d4" style="max-width:700px">
+    <div class="card"><div class="card-desc" style="font-weight:600">Auth completa</div></div>
+    <div class="card"><div class="card-desc" style="font-weight:600">RLS + Trigger</div></div>
+    <div class="card"><div class="card-desc" style="font-weight:600">Responsive</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 12: TEAM & CHIUSURA
+     ══════════════════════════════════════ -->
+<div class="slide bg-dark" data-slide="12">
+  <span class="slide-num">12 / 12</span>
+  <span class="tag anim-up">Il team</span>
+  <h2 class="anim-up d1">ITES Barozzi × Tetra Pak</h2>
+  <div class="team-grid anim-up d2">
+    <div class="team-card">
+      <div class="team-avatar">CM</div>
+      <div class="team-name">Cristian Malec</div>
+      <div class="team-role">FRONTEND, COORDINAMENTO & DESIGN</div>
+      <div class="team-desc">Concept e design UI/UX, wireframe, roadmap, sitemap, progettazione HTML/CSS, coordinamento organizzativo. Design realizzato in collaborazione con Andrea: idea e concept primario di Cristian, revisione e perfezionamento condivisi.</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">AZ</div>
+      <div class="team-name">Andrea Zaccarelli</div>
+      <div class="team-role">DATABASE, BACKEND & DESIGN</div>
+      <div class="team-desc">Schema ER, query SQL, integrazione Supabase, RLS, trigger auto-profilo. Revisione e perfezionamento del design in collaborazione con Cristian: valutazione delle proposte e definizione condivisa delle modifiche finali.</div>
+    </div>
+  </div>
+  <p class="subtitle anim-up d3" style="margin-top:28px">Tutor: Prof.ssa Chiara Bachechi · Anno scolastico 2025/2026</p>
+  <div class="anim-up d4 cover-brand" style="font-size:2.4rem;margin-top:16px">Re<em>Collect</em></div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- NAV -->
+<div class="nav-controls">
+  <button class="nav-btn" onclick="prev()" aria-label="Slide precedente">←</button>
+  <button class="nav-btn" onclick="next()" aria-label="Slide successiva">→</button>
+</div>
+
+<script>
+  var current = 0;
+  var slides = document.querySelectorAll('.slide');
+  var total = slides.length;
+  var bar = document.getElementById('progressBar');
+
+  function goTo(n) {
+    if (n < 0 || n >= total || n === current) return;
+    var prev = current;
+    slides[prev].classList.remove('active');
+    slides[prev].classList.add('exit');
+    setTimeout(function() { slides[prev].classList.remove('exit'); }, 600);
+    current = n;
+    slides[current].classList.add('active');
+    bar.style.width = ((current / (total - 1)) * 100) + '%';
+  }
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+  });
+
+  bar.style.width = '0%';
+</script>
+</body>
+</html>
